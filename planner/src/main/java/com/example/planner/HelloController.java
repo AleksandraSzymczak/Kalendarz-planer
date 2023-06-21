@@ -2,26 +2,25 @@ package com.example.planner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.layout.FlowPane;
 
-import java.text.DateFormatSymbols;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.ZonedDateTime;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.Locale;
 public class HelloController {
@@ -133,5 +132,12 @@ public class HelloController {
         // Handle the rectangle click event here
         System.out.println("Rectangle clicked!");
         System.out.println("Day of Month: " + dayOfMonth);
+        try {
+            FormApplication formApp = new FormApplication();
+            Stage stage = new Stage();
+            formApp.start(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

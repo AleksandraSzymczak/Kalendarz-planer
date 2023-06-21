@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ColorPicker layoutX="29.0" layoutY="345.0" prefHeight="38.0" prefWidth="244.0" />
+      <TextField fx:id="opis" layoutX="29.0" layoutY="187.0" prefHeight="144.0" prefWidth="244.0" />
+      <TextField layoutX="29.0" layoutY="80.0" prefHeight="25.0" prefWidth="233.0" />
+      <Label layoutX="29.0" layoutY="142.0" prefHeight="38.0" prefWidth="175.0" text="Opis" />
+      <Label layoutX="29.0" layoutY="33.0" prefHeight="38.0" prefWidth="175.0" text="Tytuł" />
+   </children>
+</AnchorPane>
