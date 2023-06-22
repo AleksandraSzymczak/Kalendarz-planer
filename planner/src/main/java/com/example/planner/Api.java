@@ -45,7 +45,37 @@ public class Api {
         }
         return null;
     }
-    public static void getHoliday(){
+    public static ChurchHolidays getHoliday(String year){
+        String apiUrl = String.format("https://date.nager.at/Api/v2/PublicHolidays/%s/PL", year);
+        HttpClient httpClient = HttpClient.newHttpClient();
 
+        try {
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(new URI(apiUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println(getResponse.body());
+
+            // Parse the response using Gson
+            Gson gson = new Gson();
+            ChurchHoliday[] holidays = gson.fromJson(getResponse.body(), ChurchHoliday[].class);
+
+            // Create a map of holiday information
+            Map<String, String> holidayMap = new HashMap<>();
+            for (ChurchHoliday holiday : holidays) {
+                holidayMap.put(holiday.getDate(), holiday.getLocalName());
+            }
+
+            // Example: Get holiday for a specific date
+            String desiredDate = "2023-07-06";
+            String holidayName = holidayMap.get(desiredDate);
+            System.out.println("Holiday on " + desiredDate + ": " + holidayName);
+            return new ChurchHolidays(holidayMap);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

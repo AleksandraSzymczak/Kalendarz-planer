@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -56,20 +57,24 @@ public class HelloController {
     private ImageView pogoda;
     LocalDate currentDate;
     LocalDate realCurrentDate;
-
+    private ChurchHolidays churchHolidays;
     public void initialize() {
+        SetUp();
+        rysujKalendarz();
+    }
+    public void SetUp(){
         left.setOnAction(this::handleButtonActionLeft);
         right.setOnAction(this::handleButtonActionRight);
         currentDate = LocalDate.now();
         realCurrentDate = LocalDate.now();
         this.setCurrDateInCalendar();
+        this.churchHolidays = Api.getHoliday(String.valueOf(currentDate.getYear()));
         pogoda();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30), event -> {
             pogoda();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        rysujKalendarz();
     }
     public void pogoda() {
         Map<String, String> apiValues = Api.getWeather();
@@ -89,12 +94,20 @@ public class HelloController {
     }
     private void handleButtonActionLeft(ActionEvent event) {
         currentDate = currentDate.minusMonths(1);
+        if(realCurrentDate.getYear() != currentDate.getYear())
+        {
+            this.churchHolidays = Api.getHoliday(String.valueOf(currentDate.getYear()));
+        }
         kalendarz.getChildren().clear();
         this.rysujKalendarz();
     }
 
     private void handleButtonActionRight(ActionEvent event) {
         currentDate = currentDate.plusMonths(1);
+        if(realCurrentDate.getYear() != currentDate.getYear())
+        {
+            this.churchHolidays = Api.getHoliday(String.valueOf(currentDate.getYear()));
+        }
         kalendarz.getChildren().clear();
         this.rysujKalendarz();
     }
@@ -151,21 +164,42 @@ public class HelloController {
                         break;
                     }
                     Text text = new Text(Integer.toString(dayOfMonth));
-                    StackPane stackPane = new StackPane(rectangle, text);
-                    stackPane.setAlignment(Pos.CENTER);
+                    text.maxWidth(70);
+                    text.setWrappingWidth(70);
+                    text.setTextAlignment(TextAlignment.CENTER);
                     if(dayOfMonth==realCurrentDate.getDayOfMonth() &&
                             currentDate.getMonth()==realCurrentDate.getMonth() &&
                             currentDate.getYear() == realCurrentDate.getYear())
                     {
-                        Color pastelColor = Color.rgb(173, 216, 230);
-                        rectangle.setFill(pastelColor);
+                        rectangle.setStrokeWidth(3);
                     }
                     if(Event.hasEventsForDate(LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth))){
                         Color pastelColor = Color.rgb(100, 150, 230);
                         rectangle.setFill(pastelColor);
                     }
-                    rectangle.setOnMouseClicked(event -> handleRectangleClick(dayOfMonth));
-                    kalendarz.getChildren().add(stackPane);
+                    String swieto = churchHolidays.czyTowieto(LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth));
+                    if(swieto!=null){
+                        Color pastelColor = Color.rgb(134, 208, 101);
+                        rectangle.setFill(pastelColor);
+                        String concatenatedText = swieto+"\n"+text.getText();
+                        Text context = new Text(concatenatedText);
+                        context.maxWidth(70);
+                        context.setWrappingWidth(70);
+                        context.setTextAlignment(TextAlignment.CENTER);
+                        StackPane stackPane = new StackPane();
+                        stackPane.getChildren().addAll(rectangle, context);
+                        stackPane.setAlignment(Pos.CENTER);
+                        rectangle.setOnMouseClicked(event -> handleRectangleClick(dayOfMonth));
+                        kalendarz.getChildren().add(stackPane);
+                    }
+                    else{
+                        StackPane stackPane = new StackPane();
+                        stackPane.getChildren().addAll(rectangle, text);
+                        stackPane.setAlignment(Pos.CENTER);
+                        rectangle.setOnMouseClicked(event -> handleRectangleClick(dayOfMonth));
+                        kalendarz.getChildren().add(stackPane);
+                    }
+
                 }
             }
         }
