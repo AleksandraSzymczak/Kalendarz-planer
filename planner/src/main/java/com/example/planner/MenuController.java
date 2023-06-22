@@ -17,9 +17,11 @@ public class MenuController {
     @FXML
     private TextArea events;
     private LocalDate formDate;
+    private HelloController helloController;
 
-    public MenuController(LocalDate formDate) {
+    public MenuController(LocalDate formDate, HelloController helloController) {
         this.formDate = formDate;
+        this.helloController = helloController;
     }
     public void initialize() {
         addEvent.setOnAction(this::handleButtonAddEvent);
@@ -27,7 +29,7 @@ public class MenuController {
     }
     private void handleButtonAddEvent(ActionEvent event){
         try {
-            FormApplication formApp = new FormApplication(formDate);
+            FormApplication formApp = new FormApplication(formDate, this.helloController);
             Stage stage = new Stage();
             formApp.start(stage);
         } catch (IOException e) {

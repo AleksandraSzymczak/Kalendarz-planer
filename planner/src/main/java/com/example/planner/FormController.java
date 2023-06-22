@@ -6,11 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 
 public class FormController {
@@ -23,8 +18,11 @@ public class FormController {
     @FXML
     private Button addEvent;
     private LocalDate Formdate;
-    public FormController(LocalDate Formdate) {
+    private HelloController helloController;
+    public FormController(LocalDate Formdate, HelloController helloController) {
+
         this.Formdate = Formdate;
+        this.helloController = helloController;
     }
 
     public void initialize() {
@@ -36,5 +34,7 @@ public class FormController {
         String tytulText = tytul.getText();
         Event event1 = new Event(Formdate, opisText, tytulText);
         event1.saveToDatabase();
+        this.helloController.cleanCalendar();
+        this.helloController.rysujKalendarz();
     }
 }

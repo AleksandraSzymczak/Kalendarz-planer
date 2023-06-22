@@ -12,8 +12,10 @@ import java.time.Month;
 
 public class FormApplication extends Application{
     private LocalDate formDate;
-    public FormApplication(LocalDate formDate) {
+    private HelloController helloController;
+    public FormApplication(LocalDate formDate, HelloController helloController) {
         this.formDate = formDate;
+        this.helloController = helloController;
         Event event = new Event(formDate,"opis","tytul");
         event.saveToDatabase();
         System.out.println(formDate);
@@ -22,7 +24,7 @@ public class FormApplication extends Application{
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("form-view.fxml"));
-        FormController controller = new FormController(formDate);
+        FormController controller = new FormController(formDate, this.helloController);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
 

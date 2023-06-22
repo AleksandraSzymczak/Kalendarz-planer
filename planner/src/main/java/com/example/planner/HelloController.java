@@ -98,6 +98,9 @@ public class HelloController {
         kalendarz.getChildren().clear();
         this.rysujKalendarz();
     }
+    public void cleanCalendar(){
+        kalendarz.getChildren().clear();
+    }
 
     public void setCurrDateInCalendar() {
         String currentYear = String.valueOf(currentDate.getYear());
@@ -173,7 +176,7 @@ public class HelloController {
         System.out.println("Day of Month: " + dayOfMonth);
         try {
             LocalDate dateForm = LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth);
-            MenuApplication formApp = new MenuApplication(dateForm);
+            MenuApplication formApp = new MenuApplication(dateForm, this);
             Stage stage = new Stage();
             formApp.start(stage);
         } catch (IOException e) {
