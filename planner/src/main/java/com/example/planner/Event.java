@@ -117,6 +117,24 @@ public class Event {
 
         return false;
     }
+    public static void deleteEventsForDate(LocalDate date) {
+        String url = "jdbc:mysql://localhost:3306/calendar";
+        String username = "root";
+        String password = "1234";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "DELETE FROM events WHERE date = ?";
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setDate(1, java.sql.Date.valueOf(date));
+                int rowsAffected = statement.executeUpdate();
+                System.out.println(rowsAffected + " event(s) deleted for date: " + date);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String toString() {
         return "CalenderEvent{" +

@@ -15,6 +15,8 @@ public class MenuController {
     @FXML
     private Button addEvent;
     @FXML
+    private Button deleteEvents;
+    @FXML
     private TextArea events;
     private LocalDate formDate;
     private HelloController helloController;
@@ -25,6 +27,7 @@ public class MenuController {
     }
     public void initialize() {
         addEvent.setOnAction(this::handleButtonAddEvent);
+        deleteEvents.setOnAction(this::handleButtonDelete);
         loadEvents();
     }
     private void handleButtonAddEvent(ActionEvent event){
@@ -35,6 +38,11 @@ public class MenuController {
         } catch (IOException e) {
             throw new RuntimeException("Error occurred while handling button click", e);
         }
+    }
+    private void handleButtonDelete(ActionEvent event){
+        Event.deleteEventsForDate(this.formDate);
+        this.helloController.cleanCalendar();;
+        this.helloController.rysujKalendarz();
     }
     public void loadEvents(){
         List<Event> eventsFromDb = Event.getEventsForDate(formDate);
