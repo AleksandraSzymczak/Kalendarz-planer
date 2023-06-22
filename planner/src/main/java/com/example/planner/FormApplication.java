@@ -7,12 +7,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 public class FormApplication extends Application{
+    private LocalDate formDate;
+    public FormApplication(LocalDate formDate) {
+        this.formDate = formDate;
+        Event event = new Event(formDate,"opis","tytul");
+        event.saveToDatabase();
+        System.out.println(formDate);
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("form-view.fxml"));
-        FormController controller = new FormController();
+        FormController controller = new FormController(formDate);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
 

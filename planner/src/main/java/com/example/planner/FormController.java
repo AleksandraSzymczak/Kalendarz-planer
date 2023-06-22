@@ -14,8 +14,15 @@ import java.time.LocalDate;
 public class FormController {
     @FXML
     private TextField opis;
+    @FXML
+    private Label date;
+    private LocalDate Formdate;
+    public FormController(LocalDate Formdate) {
+        this.Formdate = Formdate;
+    }
+
     public void initialize() {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA");
+        date.setText(Formdate.toString());
         getWeather();
     }
     public void getWeather(){

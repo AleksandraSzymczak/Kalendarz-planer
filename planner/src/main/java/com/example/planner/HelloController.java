@@ -122,6 +122,10 @@ public class HelloController {
                         Color pastelColor = Color.rgb(173, 216, 230);
                         rectangle.setFill(pastelColor);
                     }
+                    if(Event.hasEventsForDate(LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth))){
+                        Color pastelColor = Color.rgb(100, 150, 230);
+                        rectangle.setFill(pastelColor);
+                    }
                     rectangle.setOnMouseClicked(event -> handleRectangleClick(dayOfMonth));
                     kalendarz.getChildren().add(stackPane);
                 }
@@ -133,7 +137,8 @@ public class HelloController {
         System.out.println("Rectangle clicked!");
         System.out.println("Day of Month: " + dayOfMonth);
         try {
-            FormApplication formApp = new FormApplication();
+            LocalDate dateForm = LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth);
+            FormApplication formApp = new FormApplication(dateForm);
             Stage stage = new Stage();
             formApp.start(stage);
         } catch (IOException e) {
