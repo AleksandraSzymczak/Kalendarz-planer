@@ -47,12 +47,12 @@ public class Event {
             // Assuming the 'events' table exists in the database with appropriate columns
             String sql = "INSERT INTO events (date, opis, tytul) VALUES (?, ?, ?)";
 
-            Event event = new Event(formDate, "Event description", "Event title");
+            //Event event = new Event(formDate, opis, tytul);
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setDate(1, java.sql.Date.valueOf(event.getFormDate()));
-                statement.setString(2, event.getOpis());
-                statement.setString(3, event.getTytul());
+                statement.setDate(1, java.sql.Date.valueOf(this.getFormDate()));
+                statement.setString(2, this.getOpis());
+                statement.setString(3, this.getTytul());
 
                 int rowsAffected = statement.executeUpdate();
                 if (rowsAffected > 0) {
@@ -88,8 +88,8 @@ public class Event {
                     System.out.println("Title: " + title);
                     System.out.println("-----------------------------");
                     listOfEvents.add(new Event(eventDate,description,title));
-                    return  listOfEvents;
                 }
+                return  listOfEvents;
             }
         } catch (SQLException e) {
             e.printStackTrace();

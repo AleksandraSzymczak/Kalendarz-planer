@@ -22,10 +22,10 @@ public class MenuController {
         this.formDate = formDate;
     }
     public void initialize() {
-        addEvent.setOnAction(this::handleButtonAddEvent);
+        addEvent.setOnAction(event -> {this.handleButtonAddEvent();});
         loadEvents();
     }
-    private void handleButtonAddEvent(ActionEvent event){
+    public void handleButtonAddEvent(ActionEvent event){
         try {
             FormApplication formApp = new FormApplication(formDate);
             Stage stage = new Stage();

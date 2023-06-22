@@ -1,6 +1,8 @@
 package com.example.planner;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -15,7 +17,11 @@ public class FormController {
     @FXML
     private TextField opis;
     @FXML
+    private TextField tytul;
+    @FXML
     private Label date;
+    @FXML
+    private Button addEvent;
     private LocalDate Formdate;
     public FormController(LocalDate Formdate) {
         this.Formdate = Formdate;
@@ -23,8 +29,16 @@ public class FormController {
 
     public void initialize() {
         date.setText(Formdate.toString());
+        addEvent.setOnAction(this::handleAddEvent);
         getWeather();
     }
+    private void handleAddEvent(ActionEvent event) {
+        String opisText = opis.getText();
+        String tytulText = tytul.getText();
+        Event event1 = new Event(Formdate, opisText, tytulText);
+
+    }
+
     public void getWeather(){
         //private static final
         String API_KEY = "e044b28f8b16430b816232828232106";
