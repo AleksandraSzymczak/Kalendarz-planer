@@ -22,6 +22,8 @@ public class MenuApplication extends Application{
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
 
+        //Api.getWeather();
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle(formDate.toString());

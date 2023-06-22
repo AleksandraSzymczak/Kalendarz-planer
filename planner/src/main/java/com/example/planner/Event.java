@@ -44,10 +44,8 @@ public class Event {
         String password = "1234";
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            // Assuming the 'events' table exists in the database with appropriate columns
             String sql = "INSERT INTO events (date, opis, tytul) VALUES (?, ?, ?)";
 
-            //Event event = new Event(formDate, opis, tytul);
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setDate(1, java.sql.Date.valueOf(this.getFormDate()));

@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -23,8 +25,13 @@ import javafx.stage.Stage;
 
 import java.util.Date;
 import java.util.Locale;
-public class HelloController {
+import java.util.Map;
 
+public class HelloController {
+    @FXML
+    private Label localization;
+    @FXML
+    private Label temp;
     @FXML
     private Label rok;
 
@@ -39,19 +46,33 @@ public class HelloController {
 
     @FXML
     private Button right;
+    @FXML
+    private ImageView pogoda;
     LocalDate currentDate;
     LocalDate realCurrentDate;
 
     public void initialize() {
         left.setOnAction(this::handleButtonActionLeft);
         right.setOnAction(this::handleButtonActionRight);
-
+        pogoda();
         currentDate = LocalDate.now();
         realCurrentDate = LocalDate.now();
         this.setCurrDateInCalendar();
         rysujKalendarz();
     }
-
+    public void pogoda() {
+        Map<String, String> apiValues = Api.getWeather();
+        if(apiValues!=null){
+            System.out.println(apiValues.get("Img"));
+            setWeatherImage(apiValues.get("Img"));
+            localization.setText(apiValues.get("Localization"));
+            temp.setText(apiValues.get("Temp"));
+        }
+    }
+    public void setWeatherImage(String imageUrl) {
+        Image image = new Image("https:"+imageUrl);
+        pogoda.setImage(image);
+    }
     private void handleButtonActionLeft(ActionEvent event) {
         currentDate = currentDate.minusMonths(1);
         kalendarz.getChildren().clear();
