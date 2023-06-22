@@ -34,7 +34,7 @@ public class Api {
             Map<String, String> valueMap = new HashMap<>();
             valueMap.put("Temp", String.valueOf(weather.getCurrent().getTemp_c()));
             valueMap.put("Localization", weather.getLocation().getName());
-            valueMap.put("Local time", weather.getLocation().getLocaltime());
+            valueMap.put("LocalTime", weather.getLocation().getLocaltime());
             valueMap.put("Img", weather.getCurrent().getCondition().getIcon());
 
             return valueMap;

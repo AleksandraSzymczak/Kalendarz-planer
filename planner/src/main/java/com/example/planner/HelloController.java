@@ -1,5 +1,8 @@
 package com.example.planner;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,12 +25,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
 public class HelloController {
+    @FXML
+    private Label localTime;
     @FXML
     private Label localization;
     @FXML
@@ -54,10 +60,15 @@ public class HelloController {
     public void initialize() {
         left.setOnAction(this::handleButtonActionLeft);
         right.setOnAction(this::handleButtonActionRight);
-        pogoda();
         currentDate = LocalDate.now();
         realCurrentDate = LocalDate.now();
         this.setCurrDateInCalendar();
+        pogoda();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30), event -> {
+            pogoda();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
         rysujKalendarz();
     }
     public void pogoda() {
@@ -65,8 +76,11 @@ public class HelloController {
         if(apiValues!=null){
             System.out.println(apiValues.get("Img"));
             setWeatherImage(apiValues.get("Img"));
-            localization.setText(apiValues.get("Localization"));
-            temp.setText(apiValues.get("Temp"));
+            Platform.runLater(() -> {
+                localization.setText(apiValues.get("Localization"));
+                temp.setText(apiValues.get("Temp") + " °C");
+                localTime.setText(apiValues.get("LocalTime"));
+            });
         }
     }
     public void setWeatherImage(String imageUrl) {
