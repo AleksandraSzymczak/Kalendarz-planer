@@ -138,9 +138,6 @@ public class HelloController {
         System.out.println("Day of Month: " + dayOfMonth);
         try {
             LocalDate dateForm = LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth);
-            //FormApplication formApp = new FormApplication(dateForm);
-            //Stage stage = new Stage();
-            //formApp.start(stage);
             MenuApplication formApp = new MenuApplication(dateForm);
             Stage stage = new Stage();
             formApp.start(stage);
