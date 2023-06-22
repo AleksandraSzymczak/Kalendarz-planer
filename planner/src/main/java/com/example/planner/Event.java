@@ -2,6 +2,8 @@ package com.example.planner;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
     private LocalDate formDate;
@@ -64,7 +66,7 @@ public class Event {
         }
     }
 
-    public void getEventsForDate(LocalDate date) {
+    public static List<Event> getEventsForDate(LocalDate date) {
         String url = "jdbc:mysql://localhost:3306/calendar";
         String username = "root";
         String password = "1234";
@@ -74,7 +76,7 @@ public class Event {
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setDate(1, java.sql.Date.valueOf(date));
-
+                List<Event> listOfEvents = new ArrayList<>();
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     LocalDate eventDate = resultSet.getDate("date").toLocalDate();
@@ -85,11 +87,14 @@ public class Event {
                     System.out.println("Description: " + description);
                     System.out.println("Title: " + title);
                     System.out.println("-----------------------------");
+                    listOfEvents.add(new Event(eventDate,description,title));
+                    return  listOfEvents;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
     public static boolean hasEventsForDate(LocalDate date) {
         String url = "jdbc:mysql://localhost:3306/calendar";
