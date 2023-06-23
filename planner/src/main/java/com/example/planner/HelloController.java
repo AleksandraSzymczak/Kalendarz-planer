@@ -31,6 +31,10 @@ import javafx.util.Duration;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class HelloController {
     @FXML
@@ -55,6 +59,7 @@ public class HelloController {
     private Button right;
     @FXML
     private ImageView pogoda;
+    private ScheduledExecutorService scheduler;
     LocalDate currentDate;
     LocalDate realCurrentDate;
     private ChurchHolidays churchHolidays;
@@ -69,19 +74,18 @@ public class HelloController {
         realCurrentDate = LocalDate.now();
         this.setCurrDateInCalendar();
         this.churchHolidays = Api.getHoliday(String.valueOf(currentDate.getYear()));
-        pogoda();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30), event -> {
-            pogoda();
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        startWeatherUpdates();
+    }
+    public void startWeatherUpdates() {
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::pogoda, 0, 20, TimeUnit.SECONDS);
     }
     public void pogoda() {
         Map<String, String> apiValues = Api.getWeather();
         if(apiValues!=null){
             System.out.println(apiValues.get("Img"));
-            setWeatherImage(apiValues.get("Img"));
             Platform.runLater(() -> {
+                setWeatherImage(apiValues.get("Img"));
                 localization.setText(apiValues.get("Localization"));
                 temp.setText(apiValues.get("Temp") + " °C");
                 localTime.setText(apiValues.get("LocalTime"));
@@ -173,7 +177,7 @@ public class HelloController {
                     {
                         rectangle.setStrokeWidth(3);
                     }
-                    if(Event.hasEventsForDate(LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth))){
+                    if(EventCalendar.hasEventsForDate(LocalDate.of(currentDate.getYear() , currentDate.getMonthValue() , dayOfMonth))){
                         Color pastelColor = Color.rgb(100, 150, 230);
                         rectangle.setFill(pastelColor);
                     }

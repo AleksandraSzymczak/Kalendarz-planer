@@ -2,9 +2,13 @@ package com.example.planner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,7 +21,7 @@ public class MenuController {
     @FXML
     private Button deleteEvents;
     @FXML
-    private TextArea events;
+    private VBox events;
     private LocalDate formDate;
     private HelloController helloController;
 
@@ -32,7 +36,7 @@ public class MenuController {
     }
     private void handleButtonAddEvent(ActionEvent event){
         try {
-            FormApplication formApp = new FormApplication(formDate, this.helloController);
+            FormApplication formApp = new FormApplication(formDate, this.helloController,this);
             Stage stage = new Stage();
             formApp.start(stage);
         } catch (IOException e) {
@@ -40,25 +44,44 @@ public class MenuController {
         }
     }
     private void handleButtonDelete(ActionEvent event){
-        Event.deleteEventsForDate(this.formDate);
+        EventCalendar.deleteEventsForDate(this.formDate);
         this.helloController.cleanCalendar();;
         this.helloController.rysujKalendarz();
     }
     public void loadEvents(){
-        List<Event> eventsFromDb = Event.getEventsForDate(formDate);
-        StringBuilder eventsText = new StringBuilder();
-        if(eventsFromDb != null) {
-            for (Event event : eventsFromDb) {
-                LocalDate eventDate = event.getFormDate();
-                String description = event.getOpis();
-                String title = event.getTytul();
 
-                eventsText.append("Event Date: ").append(eventDate).append("\n");
-                eventsText.append("Description: ").append(description).append("\n");
-                eventsText.append("Title: ").append(title).append("\n");
-                eventsText.append("-----------------------------").append("\n");
+        List<EventCalendar> eventsFromDb = EventCalendar.getEventsForDate(formDate);
+
+        events.setSpacing(10);
+        events.setPadding(new Insets(10));
+
+        if (eventsFromDb != null) {
+            for (EventCalendar eventCalendar : eventsFromDb) {
+                LocalDate eventDate = eventCalendar.getFormDate();
+                String description = eventCalendar.getOpis();
+                String title = eventCalendar.getTytul();
+
+                Label titleLabel = new Label(title);
+                titleLabel.setStyle("-fx-font-weight: bold;");
+
+                Label descriptionLabel = new Label(description);
+                descriptionLabel.setWrapText(true);
+
+                VBox eventContainer = new VBox(titleLabel, descriptionLabel);
+                eventContainer.setSpacing(5);
+                eventContainer.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;");
+                eventContainer.setOnMouseClicked(event -> {
+                    eventCalendar.deleteEventsForDateOpisTytul();
+                    events.getChildren().clear();
+                    loadEvents();
+                    this.helloController.cleanCalendar();
+                    this.helloController.rysujKalendarz();
+                });
+                events.getChildren().add(eventContainer);
             }
+            ScrollPane scrollPane = new ScrollPane(events);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
         }
-        events.setText(eventsText.toString());
     }
 }

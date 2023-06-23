@@ -20,10 +20,12 @@ public class FormController {
     private Button addEvent;
     private LocalDate Formdate;
     private HelloController helloController;
-    public FormController(LocalDate Formdate, HelloController helloController) {
+    private MenuController menuController;
+    public FormController(LocalDate Formdate, HelloController helloController, MenuController menuController) {
 
         this.Formdate = Formdate;
         this.helloController = helloController;
+        this.menuController = menuController;
     }
 
     public void initialize() {
@@ -33,8 +35,9 @@ public class FormController {
     private void handleAddEvent(ActionEvent event) {
         String opisText = opis.getText();
         String tytulText = tytul.getText();
-        Event event1 = new Event(Formdate, opisText, tytulText);
+        EventCalendar event1 = new EventCalendar(Formdate, opisText, tytulText);
         event1.saveToDatabase();
+        this.menuController.loadEvents();
         this.helloController.cleanCalendar();
         this.helloController.rysujKalendarz();
     }
