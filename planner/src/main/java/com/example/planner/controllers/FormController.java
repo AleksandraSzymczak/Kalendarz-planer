@@ -1,5 +1,6 @@
-package com.example.planner;
+package com.example.planner.controllers;
 
+import com.example.planner.database.EventCalendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

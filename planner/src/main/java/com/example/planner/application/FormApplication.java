@@ -1,5 +1,8 @@
-package com.example.planner;
+package com.example.planner.application;
 
+import com.example.planner.controllers.FormController;
+import com.example.planner.controllers.HelloController;
+import com.example.planner.controllers.MenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +11,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 
 public class FormApplication extends Application{
     private LocalDate formDate;
@@ -24,7 +26,7 @@ public class FormApplication extends Application{
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("form-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("/com/example/planner/form-view.fxml"));
         FormController controller = new FormController(formDate, this.helloController,
                 this.menuController);
         fxmlLoader.setController(controller);

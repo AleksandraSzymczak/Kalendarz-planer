@@ -1,15 +1,14 @@
-package com.example.planner;
+package com.example.planner.controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import com.example.planner.database.EventCalendar;
+import com.example.planner.application.MenuApplication;
+import com.example.planner.data.ChurchHolidays;
+import com.example.planner.remote.Api;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,12 +25,11 @@ import java.time.LocalDate;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -84,11 +82,13 @@ public class HelloController {
         Map<String, String> apiValues = Api.getWeather();
         if(apiValues!=null){
             System.out.println(apiValues.get("Img"));
+            LocalTime currentTime = LocalTime.now();
             Platform.runLater(() -> {
                 setWeatherImage(apiValues.get("Img"));
                 localization.setText(apiValues.get("Localization"));
                 temp.setText(apiValues.get("Temp") + " °C");
-                localTime.setText(apiValues.get("LocalTime"));
+                localTime.setText(Integer.toString(currentTime.getHour())
+                        +" : "+Integer.toString(currentTime.getMinute()));
             });
         }
     }

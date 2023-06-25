@@ -1,5 +1,8 @@
-package com.example.planner;
+package com.example.planner.application;
 
+import com.example.planner.application.FormApplication;
+import com.example.planner.controllers.HelloController;
+import com.example.planner.controllers.MenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +22,7 @@ public class MenuApplication extends Application{
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("form-menu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FormApplication.class.getResource("/com/example/planner/form-menu.fxml"));
         MenuController controller = new MenuController(formDate, this.helloController);
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();

@@ -1,13 +1,13 @@
-package com.example.planner;
+package com.example.planner.controllers;
 
+import com.example.planner.database.EventCalendar;
+import com.example.planner.application.FormApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -45,13 +45,14 @@ public class MenuController {
     }
     private void handleButtonDelete(ActionEvent event){
         EventCalendar.deleteEventsForDate(this.formDate);
+        events.getChildren().clear();
         this.helloController.cleanCalendar();;
         this.helloController.rysujKalendarz();
     }
     public void loadEvents(){
 
         List<EventCalendar> eventsFromDb = EventCalendar.getEventsForDate(formDate);
-
+        events.getChildren().clear();
         events.setSpacing(10);
         events.setPadding(new Insets(10));
 

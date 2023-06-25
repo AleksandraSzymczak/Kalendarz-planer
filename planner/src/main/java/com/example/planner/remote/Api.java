@@ -1,9 +1,12 @@
-package com.example.planner;
+package com.example.planner.remote;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.example.planner.data.ChurchHoliday;
+import com.example.planner.data.ChurchHolidays;
+import com.example.planner.data.Weather;
 import com.google.gson.Gson;
 
 import java.net.http.HttpClient;

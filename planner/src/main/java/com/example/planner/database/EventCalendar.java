@@ -1,4 +1,4 @@
-package com.example.planner;
+package com.example.planner.database;
 
 import java.sql.*;
 import java.time.LocalDate;

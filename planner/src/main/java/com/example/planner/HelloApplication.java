@@ -1,5 +1,6 @@
 package com.example.planner;
 
+import com.example.planner.controllers.HelloController;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;

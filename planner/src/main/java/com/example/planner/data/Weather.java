@@ -1,4 +1,4 @@
-package com.example.planner;
+package com.example.planner.data;
 
 public class Weather {
     public Location location;
